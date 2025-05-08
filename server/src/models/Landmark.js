@@ -1,0 +1,47 @@
+import { Sequelize, Model, DataTypes } from 'sequelize';
+import sequelize from '../db/connection.js';
+
+class Landmark extends Model {}
+
+Landmark.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    geographic_location: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    type_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    tableName: 'landmarks',
+    schema: 'public',
+    timestamps: false,
+  }
+);
+
+Landmark.associate = (models) => {
+  Landmark.belongsTo(models.LandmarkType, {
+    foreignKey: 'type_id',
+  });
+  Landmark.hasMany(models.RoutePoint, {
+    foreignKey: 'landmark_id',
+  });
+};
+
+export default Landmark;

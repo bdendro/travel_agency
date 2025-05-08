@@ -15,7 +15,7 @@ const sequelize = new Sequelize({
 
 try {
   await sequelize.authenticate();
-  logger.info('Connection has been successfully.');
+  logger.info('Connection has been established successfully.');
 } catch (err) {
   logger.error({ err, msg: 'Database connection failed' });
   process.exit(1);

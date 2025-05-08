@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import './models/index.js';
 // import router from './routes/router.js';
 import Logger from './utils/Logger/Logger.js';
 import sequelize from './db/connection.js';
