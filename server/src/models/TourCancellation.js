@@ -11,12 +11,12 @@ TourCancellation.init(
       autoIncrement: true,
       allowNull: false,
     },
-    booking_id: {
+    bookingId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       unique: true,
     },
-    cancellation_date: {
+    cancellationDate: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
@@ -31,6 +31,7 @@ TourCancellation.init(
     schema: 'public',
     hasTrigger: true,
     timestamps: false,
+    underscored: true,
   }
 );
 

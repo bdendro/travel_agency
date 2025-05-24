@@ -12,22 +12,22 @@ Tour.init(
       autoIncrement: true,
       allowNull: false,
     },
-    employee_id: {
+    employeeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
     name: {
       type: DataTypes.STRING(255),
     },
-    start_date: {
+    startDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    end_date: {
+    endDate: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    max_tourists: {
+    maxTourists: {
       type: DataTypes.INTEGER,
     },
     status: {
@@ -41,6 +41,7 @@ Tour.init(
     tableName: 'tours',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 

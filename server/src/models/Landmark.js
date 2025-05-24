@@ -18,11 +18,11 @@ Landmark.init(
     description: {
       type: DataTypes.TEXT,
     },
-    geographic_location: {
+    geographicLocation: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    type_id: {
+    typeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -32,6 +32,7 @@ Landmark.init(
     tableName: 'landmarks',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 

@@ -12,20 +12,20 @@ TourBooking.init(
       autoIncrement: true,
       allowNull: false,
     },
-    tour_id: {
+    tourId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    tour_operator_id: {
+    tourOperatorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    booking_date: {
+    bookingDate: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: Sequelize.fn('now'),
     },
-    tourist_count: {
+    touristCount: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -45,6 +45,7 @@ TourBooking.init(
     schema: 'public',
     hasTrigger: true,
     timestamps: false,
+    underscored: true,
   }
 );
 

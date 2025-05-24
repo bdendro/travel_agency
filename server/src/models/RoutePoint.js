@@ -11,15 +11,15 @@ RoutePoint.init(
       autoIncrement: true,
       allowNull: false,
     },
-    landmark_id: {
+    landmarkId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    tour_id: {
+    tourId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    sequence_order: {
+    sequenceOrder: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -32,6 +32,7 @@ RoutePoint.init(
     tableName: 'route_points',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 

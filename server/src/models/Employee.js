@@ -15,11 +15,11 @@ Employee.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    position_id: {
+    positionId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    employed_since: {
+    employedSince: {
       type: DataTypes.DATEONLY,
       defaultValue: Sequelize.literal('CURRENT_DATE'),
     },
@@ -28,7 +28,7 @@ Employee.init(
       allowNull: false,
       unique: true,
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       unique: true,
     },
@@ -38,18 +38,21 @@ Employee.init(
     tableName: 'employees',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 
 Employee.associate = (models) => {
   Employee.belongsTo(models.EmployeePositionType, {
     foreignKey: 'position_id',
+    as: 'position',
   });
   Employee.hasMany(models.Tour, {
     foreignKey: 'employee_id',
   });
   Employee.belongsTo(models.User, {
     foreignKey: 'user_id',
+    onDelete: 'SET NULL',
   });
 };
 

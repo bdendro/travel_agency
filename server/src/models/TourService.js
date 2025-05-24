@@ -12,15 +12,15 @@ TourService.init(
       autoIncrement: true,
       allowNull: false,
     },
-    contractor_id: {
+    contractorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    tour_id: {
+    tourId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    type_id: {
+    typeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -42,6 +42,7 @@ TourService.init(
     tableName: 'tour_services',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 

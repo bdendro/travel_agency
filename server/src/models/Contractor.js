@@ -15,11 +15,11 @@ Contractor.init(
       type: DataTypes.STRING(255),
       allowNull: false,
     },
-    type_id: {
+    typeId: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    contact_phone: {
+    contactPhone: {
       type: DataTypes.STRING(50),
     },
     email: {
@@ -32,6 +32,7 @@ Contractor.init(
     tableName: 'contractors',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 

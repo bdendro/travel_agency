@@ -1,6 +1,6 @@
-export const ENV_LOCAL = 'local';
-export const ENV_PROD = 'prod';
+export const ENV_DEV = 'development';
+export const ENV_PROD = 'production';
 
 export function isEnv(envStr) {
-  return [ENV_LOCAL, ENV_PROD].includes(envStr);
+  return [ENV_DEV, ENV_PROD].includes(envStr);
 }

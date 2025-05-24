@@ -20,7 +20,7 @@ TourOperator.init(
       type: DataTypes.ENUM(...Object.values(TOUR_OPERATOR_TYPES)),
       allowNull: false,
     },
-    contact_phone: {
+    contactPhone: {
       type: DataTypes.STRING(50),
     },
     email: {
@@ -28,7 +28,7 @@ TourOperator.init(
       allowNull: false,
       unique: true,
     },
-    user_id: {
+    userId: {
       type: DataTypes.INTEGER,
       allowNull: true,
       unique: true,
@@ -39,6 +39,7 @@ TourOperator.init(
     tableName: 'tour_operators',
     schema: 'public',
     timestamps: false,
+    underscored: true,
   }
 );
 
@@ -48,6 +49,7 @@ TourOperator.associate = (models) => {
   });
   TourOperator.belongsTo(models.User, {
     foreignKey: 'user_id',
+    onDelete: 'SET NULL',
   });
 };
 

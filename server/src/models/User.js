@@ -31,17 +31,20 @@ User.init(
     tableName: 'users',
     schema: 'public',
     timestamps: true,
-    createdAt: 'created_at',
+    // createdAt: 'created_at',
     updatedAt: false,
+    underscored: true,
   }
 );
 
 User.associate = (models) => {
   User.hasOne(models.Employee, {
     foreignKey: 'user_id',
+    onDelete: 'SET NULL',
   });
   User.hasOne(models.TourOperator, {
     foreignKey: 'user_id',
+    onDelete: 'SET NULL',
   });
 };
 
