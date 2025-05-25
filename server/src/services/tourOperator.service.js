@@ -3,6 +3,7 @@ import TourOperator from '../models/TourOperator.js';
 import USER_ROLES from '../constants/enums/userRoles.js';
 import { BadRequestError, NotFoundError, ConflictError } from '../utils/HttpErrors.js';
 import userService from './user.service.js';
+import { DB_ERRORS } from '../constants/dbErrors.js';
 
 class TourOperatorService {
   constructor() {
