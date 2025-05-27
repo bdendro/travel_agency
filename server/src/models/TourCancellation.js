@@ -1,5 +1,6 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import sequelize from '../db/connection.js';
+import REFUND_STATUS from '../constants/enums/refundStatuses.js';
 
 class TourCancellation extends Model {}
 
@@ -23,6 +24,16 @@ TourCancellation.init(
     },
     reason: {
       type: DataTypes.TEXT,
+    },
+    refundAmount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      defaultValue: 0,
+    },
+    refundStatus: {
+      type: DataTypes.ENUM(...Object.values(REFUND_STATUS)),
+      allowNull: false,
+      defaultValue: REFUND_STATUS.PENDING,
     },
   },
   {

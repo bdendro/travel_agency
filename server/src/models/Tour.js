@@ -33,7 +33,10 @@ Tour.init(
     status: {
       type: DataTypes.ENUM(...Object.values(TOUR_STATUSES)),
       allowNull: false,
-      defaultValue: TOUR_STATUSES.SCHEDULED,
+      defaultValue: TOUR_STATUSES.DRAFT,
+    },
+    price_per_person: {
+      type: DataTypes.DECIMAL(10, 2),
     },
   },
   {

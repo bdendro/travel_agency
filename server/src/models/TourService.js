@@ -24,8 +24,10 @@ TourService.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
+    isMandatory: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: 'true',
     },
     status: {
       type: DataTypes.ENUM(...Object.values(TOUR_SERVICE_STATUSES)),
@@ -33,8 +35,11 @@ TourService.init(
       defaultValue: TOUR_SERVICE_STATUSES.PREPARING,
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
     },
   },
   {

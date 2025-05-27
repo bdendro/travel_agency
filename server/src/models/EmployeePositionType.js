@@ -28,7 +28,7 @@ EmployeePositionType.init(
 EmployeePositionType.associate = (models) => {
   EmployeePositionType.hasMany(models.Employee, {
     foreignKey: 'position_id',
-    as: 'employee',
+    as: 'employees',
   });
 };
 
