@@ -27,7 +27,7 @@ ContractorType.init(
 
 ContractorType.associate = (models) => {
   ContractorType.hasMany(models.Contractor, {
-    foreignKey: 'type_id',
+    foreignKey: 'typeId',
   });
 };
 

@@ -18,14 +18,13 @@ Tour.init(
     },
     name: {
       type: DataTypes.STRING(255),
+      allowNull: false,
     },
     startDate: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     endDate: {
       type: DataTypes.DATE,
-      allowNull: false,
     },
     maxTourists: {
       type: DataTypes.INTEGER,
@@ -35,7 +34,7 @@ Tour.init(
       allowNull: false,
       defaultValue: TOUR_STATUSES.DRAFT,
     },
-    price_per_person: {
+    pricePerPerson: {
       type: DataTypes.DECIMAL(10, 2),
     },
   },
@@ -50,16 +49,17 @@ Tour.init(
 
 Tour.associate = (models) => {
   Tour.belongsTo(models.Employee, {
-    foreignKey: 'employee_id',
+    foreignKey: 'employeeId',
+    as: 'employee',
   });
   Tour.hasMany(models.RoutePoint, {
-    foreignKey: 'tour_id',
+    foreignKey: 'tourId',
   });
   Tour.hasMany(models.TourBooking, {
-    foreignKey: 'tour_id',
+    foreignKey: 'tourId',
   });
   Tour.hasMany(models.TourService, {
-    foreignKey: 'tour_id',
+    foreignKey: 'tourId',
   });
 };
 

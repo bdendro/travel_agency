@@ -39,11 +39,13 @@ User.init(
 
 User.associate = (models) => {
   User.hasOne(models.Employee, {
-    foreignKey: 'user_id',
+    foreignKey: 'userId',
+    as: 'employee',
     onDelete: 'SET NULL',
   });
   User.hasOne(models.TourOperator, {
-    foreignKey: 'user_id',
+    foreignKey: 'userId',
+    as: 'tourOperator',
     onDelete: 'SET NULL',
   });
 };

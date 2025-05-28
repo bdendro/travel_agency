@@ -44,14 +44,16 @@ Employee.init(
 
 Employee.associate = (models) => {
   Employee.belongsTo(models.EmployeePositionType, {
-    foreignKey: 'position_id',
+    foreignKey: 'positionId',
     as: 'position',
   });
   Employee.hasMany(models.Tour, {
-    foreignKey: 'employee_id',
+    foreignKey: 'employeeId',
+    as: 'tours',
   });
   Employee.belongsTo(models.User, {
-    foreignKey: 'user_id',
+    foreignKey: 'userId',
+    as: 'user',
     onDelete: 'SET NULL',
   });
 };

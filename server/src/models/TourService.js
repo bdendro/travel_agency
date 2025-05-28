@@ -53,13 +53,13 @@ TourService.init(
 
 TourService.associate = (models) => {
   TourService.belongsTo(models.Contractor, {
-    foreignKey: 'contractor_id',
+    foreignKey: 'contractorId',
   });
   TourService.belongsTo(models.TourServiceType, {
-    foreignKey: 'type_id',
+    foreignKey: 'typeId',
   });
   TourService.belongsTo(models.Tour, {
-    foreignKey: 'tour_id',
+    foreignKey: 'tourId',
   });
 };
 

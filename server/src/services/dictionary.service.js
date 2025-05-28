@@ -52,6 +52,7 @@ export default class DictionaryService {
         throw new ConflictError(
           `${this.dictionaryItemName} cannot be deleted because it is referenced by other records.`
         );
+      throw err;
     }
   }
 }

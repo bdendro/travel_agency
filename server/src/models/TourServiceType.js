@@ -27,7 +27,7 @@ TourServiceType.init(
 
 TourServiceType.associate = (models) => {
   TourServiceType.hasMany(models.TourService, {
-    foreignKey: 'type_id',
+    foreignKey: 'typeId',
   });
 };
 

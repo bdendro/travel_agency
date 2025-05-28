@@ -7,6 +7,7 @@ import router from './routes/router.js';
 import Logger from './utils/Logger/Logger.js';
 import sequelize from './db/connection.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { ENV_DEV } from './constants/env.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,8 @@ app.use(cookieParser());
 app.use('/', router);
 
 app.use((req, res, next) => {
-  res.status(404).json({ message: 'Not Found' });
+  if (process.env.NODE_ENV === ENV_DEV) logger.warn(`Not found ${req.url}`);
+  return res.status(404).json({ message: 'Not Found' });
 });
 
 app.use(errorHandler);

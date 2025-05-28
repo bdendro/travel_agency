@@ -27,7 +27,7 @@ LandmarkType.init(
 
 LandmarkType.associate = (models) => {
   LandmarkType.hasMany(models.Landmark, {
-    foreignKey: 'type_id',
+    foreignKey: 'typeId',
   });
 };
 

@@ -38,10 +38,10 @@ RoutePoint.init(
 
 RoutePoint.associate = (models) => {
   RoutePoint.belongsTo(models.Landmark, {
-    foreignKey: 'landmark_id',
+    foreignKey: 'landmarkId',
   });
   RoutePoint.belongsTo(models.Tour, {
-    foreignKey: 'tour_id',
+    foreignKey: 'tourId',
   });
 };
 
