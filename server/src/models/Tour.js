@@ -54,12 +54,16 @@ Tour.associate = (models) => {
   });
   Tour.hasMany(models.RoutePoint, {
     foreignKey: 'tourId',
+    as: 'routePoints',
+    onDelete: 'CASCADE',
   });
   Tour.hasMany(models.TourBooking, {
     foreignKey: 'tourId',
+    as: 'tourBookings',
   });
   Tour.hasMany(models.TourService, {
     foreignKey: 'tourId',
+    as: 'tourServices',
   });
 };
 

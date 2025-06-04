@@ -8,19 +8,19 @@ import userService from './user.service.js';
 
 class EmployeeService {
   constructor() {
-    this.EmployeeModel = Employee;
+    this.Employee = Employee;
     this.EmployeePositionModel = EmployeePositionType;
     this.userService = userService;
   }
 
   async _getById(id) {
-    const employee = await this.EmployeeModel.findByPk(id);
+    const employee = await this.Employee.findByPk(id);
     if (!employee) throw new NotFoundError('Employee not found');
     return employee;
   }
 
   async getWithPosition(id) {
-    const employee = await this.EmployeeModel.findByPk(id, {
+    const employee = await this.Employee.findByPk(id, {
       include: [{ model: this.EmployeePositionModel, as: 'position' }],
     });
     if (!employee) throw new NotFoundError('Employee not found');
@@ -35,6 +35,12 @@ class EmployeeService {
     return employee;
   }
 
+  async getByUserId(userId) {
+    const employee = await this.Employee.findOne({ where: { userId } });
+    if (!employee) throw new NotFoundError('Employee not found');
+    return employee;
+  }
+
   async registerEmployee(user, employeeId) {
     if (![USER_ROLES.ADMIN, USER_ROLES.EMPLOYEE].includes(user.role)) {
       throw new BadRequestError(`'${user.role}' isn't employee role`);
@@ -42,7 +48,7 @@ class EmployeeService {
     const t = await sequelize.transaction();
 
     try {
-      const employee = await this.EmployeeModel.findByPk(employeeId, {
+      const employee = await this.Employee.findByPk(employeeId, {
         transaction: t,
         lock: t?.LOCK.UPDATE,
       });
@@ -61,7 +67,7 @@ class EmployeeService {
   }
 
   async unregisterEmployee(employeeId) {
-    const employee = await this.EmployeeModel.findByPk(employeeId);
+    const employee = await this.Employee.findByPk(employeeId);
 
     if (!employee) throw new NotFoundError('Employee not found');
     if (!employee.userId) throw new ConflictError("Employee already don't have access");
@@ -72,7 +78,7 @@ class EmployeeService {
 
   async setEmployeeUserId(id, userId, transaction) {
     try {
-      await this.EmployeeModel.update({ userId }, { where: { id }, transaction });
+      await this.Employee.update({ userId }, { where: { id }, transaction });
 
       return await this.getWithPosition(id);
     } catch (error) {

@@ -1,16 +1,19 @@
 import { Router } from 'express';
 import {
+  createRoutePoint,
   createTour,
   createTourForEmployee,
   deleteTour,
   getEmployeeTours,
   getTours,
+  setTourScheduled,
 } from '../controllers/tour.controller.js';
 import { auth } from '../middleware/auth.js';
 import validateSchema from '../middleware/validateSchema.js';
 import idValidator from '../middleware/validateParamsId.js';
 import USER_ROLES from '../constants/enums/userRoles.js';
-import { createTourSchema } from '../middleware/schemas/tour.schema.js';
+import { createTourSchema, tourScheduledSchema } from '../middleware/schemas/tour.schema.js';
+import { createRoutePointWithLandmarkSchema } from '../middleware/schemas/routePoint.schema.js';
 
 const tourRouter = Router();
 
@@ -31,6 +34,22 @@ tourRouter.post(
   idValidator(['employeeId']),
   validateSchema(createTourSchema),
   createTourForEmployee
+);
+
+tourRouter.post(
+  '/:tourId/route-points',
+  idValidator(['tourId']),
+  auth([USER_ROLES.EMPLOYEE, USER_ROLES.ADMIN]),
+  validateSchema(createRoutePointWithLandmarkSchema),
+  createRoutePoint
+);
+
+tourRouter.patch(
+  '/:tourId/set-scheduled',
+  idValidator(['tourId']),
+  auth([USER_ROLES.EMPLOYEE, USER_ROLES.ADMIN]),
+  validateSchema(tourScheduledSchema),
+  setTourScheduled
 );
 
 tourRouter.delete(

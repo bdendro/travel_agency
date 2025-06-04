@@ -52,12 +52,15 @@ TourBooking.init(
 TourBooking.associate = (models) => {
   TourBooking.hasOne(models.TourCancellation, {
     foreignKey: 'bookingId',
+    as: 'tourCancellation',
   });
   TourBooking.belongsTo(models.TourOperator, {
     foreignKey: 'tourOperatorId',
+    as: 'tourOperator',
   });
   TourBooking.belongsTo(models.Tour, {
     foreignKey: 'tourId',
+    as: 'tour',
   });
 };
 

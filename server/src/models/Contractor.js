@@ -39,9 +39,11 @@ Contractor.init(
 Contractor.associate = (models) => {
   Contractor.belongsTo(models.ContractorType, {
     foreignKey: 'typeId',
+    as: 'type',
   });
   Contractor.hasMany(models.TourService, {
     foreignKey: 'contractorId',
+    as: 'tourServices',
   });
 };
 

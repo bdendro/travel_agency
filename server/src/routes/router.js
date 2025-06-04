@@ -6,6 +6,8 @@ import dictionaryRoute from './dictionaries/dictionary.route.js';
 import USER_ROLES from '../constants/enums/userRoles.js';
 import { auth } from '../middleware/auth.js';
 import tourRouter from './tour.route.js';
+import routePointRouter from './routePoint.route.js';
+import landmarkRouter from './landmark.route.js';
 
 const router = Router();
 
@@ -18,5 +20,9 @@ router.use('/employees', employeeRouter);
 router.use('/tour-operators', tourOperatorRouter);
 
 router.use('/tours', tourRouter);
+
+router.use('/route-points', routePointRouter);
+
+router.use('/landmarks', landmarkRouter);
 
 export default router;

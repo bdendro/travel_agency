@@ -7,6 +7,8 @@ import { DB_ERRORS } from '../constants/dbErrors.js';
 import { BadRequestError, ConflictError, NotFoundError } from '../utils/HttpErrors.js';
 import TOUR_STATUSES_FOR_ROLE from '../constants/tourView.js';
 import TOUR_STATUSES from '../constants/enums/tourStatuses.js';
+import { getFutureDate } from '../utils/dates.js';
+import employeeService from './employee.service.js';
 
 class TourService {
   constructor() {
@@ -14,6 +16,7 @@ class TourService {
     this.Employee = Employee;
     this.User = User;
     this.EmployeePositionType = EmployeePositionType;
+    this.employeeService = employeeService;
   }
 
   async getToursForRole(role) {
@@ -57,12 +60,6 @@ class TourService {
     });
   }
 
-  async getEmployeeByUserId(userId) {
-    const employee = this.Employee.findOne({ where: { userId } });
-    if (!employee) throw new NotFoundError('Employee not found');
-    return employee;
-  }
-
   async createTour(tour, employeeId) {
     const newTour = { ...tour, employeeId };
     try {
@@ -72,6 +69,28 @@ class TourService {
         throw new ConflictError(`This employee doesn't exists`);
       throw err;
     }
+  }
+
+  async setTourScheduled(user, tourId, updates) {
+    if (updates.startDate < getFutureDate(process.env.TOUR_LOCKED_DURATION))
+      throw new BadRequestError(
+        `Start date must be at least now + ${process.env.TOUR_LOCKED_DURATION}`
+      );
+
+    const employee = await this.employeeService.getByUserId(user?.userId);
+    const tour = await this.Tour.findOne({ where: { id: tourId, employeeId: employee.id } });
+    if (!tour) throw new NotFoundError('Tour not found');
+    if (tour.status !== TOUR_STATUSES.DRAFT)
+      throw new ConflictError(
+        `Tour with only '${TOUR_STATUSES.DRAFT}' status can be updated to '${TOUR_STATUSES.SCHEDULED}'`
+      );
+
+    const [affectedRows, updatedTours] = await this.Tour.update(
+      { ...updates, status: TOUR_STATUSES.SCHEDULED },
+      { where: { id: tourId, employeeId: employee.id }, returning: true }
+    );
+    if (!affectedRows) throw new NotFoundError('Tour not found');
+    return updatedTours[0];
   }
 
   async deleteTourForRole(user, tourId) {
@@ -91,7 +110,7 @@ class TourService {
   }
 
   async deleteTourByEmployee(userId, tourId) {
-    const employee = await this.getEmployeeByUserId(userId);
+    const employee = await this.employeeService.getByUserId(userId);
 
     try {
       const deletedRowsCount = await this.Tour.destroy({

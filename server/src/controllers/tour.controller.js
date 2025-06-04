@@ -1,6 +1,10 @@
+import { RoutePointWithLandmarkDTO } from '../dto/routePoint/RoutePointLandmark.dto.js';
 import BaseTourDTO from '../dto/tours/BaseTour.dto.js';
 import TourDTO from '../dto/tours/Tour.dto.js';
 import TourWithEmployeeDTO from '../dto/tours/TourEmployee.dto.js';
+import { getRoutePoint } from '../middleware/schemas/routePoint.schema.js';
+import employeeService from '../services/employee.service.js';
+import routePointService from '../services/routePoint.service.js';
 import tourService from '../services/tour.service.js';
 
 export const getTours = async (req, res, next) => {
@@ -26,7 +30,7 @@ export const getEmployeeTours = async (req, res, next) => {
 export const createTour = async (req, res, next) => {
   const tourReq = req.bodyValidated;
   try {
-    const employee = await tourService.getEmployeeByUserId(req.user?.userId);
+    const employee = await employeeService.getByUserId(req.user?.userId);
     const tour = await tourService.createTour(tourReq, employee.id);
     return res.status(201).json(new TourDTO(tour));
   } catch (err) {
@@ -39,6 +43,34 @@ export const createTourForEmployee = async (req, res, next) => {
   const employeeId = req.paramsValidated.employeeId;
   try {
     const tour = await tourService.createTour(tourReq, employeeId);
+    return res.status(201).json(new TourDTO(tour));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createRoutePoint = async (req, res, next) => {
+  const tourId = req.paramsValidated.tourId;
+  const { landmark: landmarkReq } = req.bodyValidated;
+  const routePointReq = getRoutePoint(req.bodyValidated);
+  try {
+    const { landmark, routePoint } = await routePointService.createRoutePointWithLandmark(
+      req.user,
+      tourId,
+      landmarkReq,
+      routePointReq
+    );
+    return res.status(201).json(new RoutePointWithLandmarkDTO(routePoint, landmark));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const setTourScheduled = async (req, res, next) => {
+  const tourId = req.paramsValidated.tourId;
+  const tourReq = req.bodyValidated;
+  try {
+    const tour = await tourService.setTourScheduled(req.user, tourId, tourReq);
     return res.status(201).json(new TourDTO(tour));
   } catch (err) {
     next(err);

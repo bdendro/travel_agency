@@ -39,9 +39,11 @@ Landmark.init(
 Landmark.associate = (models) => {
   Landmark.belongsTo(models.LandmarkType, {
     foreignKey: 'typeId',
+    as: 'type',
   });
   Landmark.hasMany(models.RoutePoint, {
     foreignKey: 'landmarkId',
+    as: 'routePoints',
   });
 };
 

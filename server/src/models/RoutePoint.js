@@ -23,7 +23,7 @@ RoutePoint.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    duration: {
+    durationInSeconds: {
       type: DataTypes.INTEGER,
     },
   },
@@ -33,15 +33,25 @@ RoutePoint.init(
     schema: 'public',
     timestamps: false,
     underscored: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ['tourId', 'sequenceOrder'],
+        name: 'route_points_order_key',
+      },
+    ],
   }
 );
 
 RoutePoint.associate = (models) => {
   RoutePoint.belongsTo(models.Landmark, {
     foreignKey: 'landmarkId',
+    as: 'landmark',
   });
   RoutePoint.belongsTo(models.Tour, {
     foreignKey: 'tourId',
+    as: 'tour',
+    onDelete: 'CASCADE',
   });
 };
 

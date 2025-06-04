@@ -13,7 +13,7 @@ const validateSchema =
     });
     if (error) {
       const details = error.details.map((d) => {
-        return { field: `${d.path[0]}`, message: `${d.message}` };
+        return { field: `${d.path.join('.')}`, message: `${d.message}` };
       });
       throw new ValidationError(details);
     }

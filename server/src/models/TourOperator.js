@@ -46,9 +46,11 @@ TourOperator.init(
 TourOperator.associate = (models) => {
   TourOperator.hasMany(models.TourBooking, {
     foreignKey: 'tourOperatorId',
+    as: 'tourBookings',
   });
   TourOperator.belongsTo(models.User, {
     foreignKey: 'userId',
+    as: 'user',
     onDelete: 'SET NULL',
   });
 };
