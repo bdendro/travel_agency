@@ -8,6 +8,8 @@ import { auth } from '../middleware/auth.js';
 import tourRouter from './tour.route.js';
 import routePointRouter from './routePoint.route.js';
 import landmarkRouter from './landmark.route.js';
+import tourServiceRouter from './tourService.route.js';
+import contractorRouter from './contractor.route.js';
 
 const router = Router();
 
@@ -24,5 +26,9 @@ router.use('/tours', tourRouter);
 router.use('/route-points', routePointRouter);
 
 router.use('/landmarks', landmarkRouter);
+
+router.use('/tour-services', tourServiceRouter);
+
+router.use('/contractors', contractorRouter);
 
 export default router;

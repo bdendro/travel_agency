@@ -2,10 +2,13 @@ import { RoutePointWithLandmarkDTO } from '../dto/routePoint/RoutePointLandmark.
 import BaseTourDTO from '../dto/tours/BaseTour.dto.js';
 import TourDTO from '../dto/tours/Tour.dto.js';
 import TourWithEmployeeDTO from '../dto/tours/TourEmployee.dto.js';
+import { TourServiceWithContractorDTO } from '../dto/tourService/TourServiceContractor.dto.js';
 import { getRoutePoint } from '../middleware/schemas/routePoint.schema.js';
+import { getTourService } from '../middleware/schemas/tourService.schema.js';
 import employeeService from '../services/employee.service.js';
 import routePointService from '../services/routePoint.service.js';
 import tourService from '../services/tour.service.js';
+import tourServiceService from '../services/tourService.service.js';
 
 export const getTours = async (req, res, next) => {
   try {
@@ -61,6 +64,23 @@ export const createRoutePoint = async (req, res, next) => {
       routePointReq
     );
     return res.status(201).json(new RoutePointWithLandmarkDTO(routePoint, landmark));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createTourService = async (req, res, next) => {
+  const tourId = req.paramsValidated.tourId;
+  const { contractor: contractorReq } = req.bodyValidated;
+  const tourServiceReq = getTourService(req.bodyValidated);
+  try {
+    const { contractor, tourService } = await tourServiceService.createTourServiceWithContractor(
+      req.user,
+      tourId,
+      contractorReq,
+      tourServiceReq
+    );
+    return res.status(201).json(new TourServiceWithContractorDTO(tourService, contractor));
   } catch (err) {
     next(err);
   }

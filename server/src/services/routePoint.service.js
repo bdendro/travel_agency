@@ -48,10 +48,10 @@ class RoutePointService {
       if (err instanceof DB_ERRORS.UNIQUE_CONSTRAINT)
         throw new ConflictError("A tour can't contain two route points with the same order");
       if (err instanceof DB_ERRORS.FOREIGN_KEY_CONSTRAINT) {
-        if (err.constraint === CONSTRAINTS.ROUTE_POINTS_TOURS_FK)
+        if (err.original.constraint === CONSTRAINTS.ROUTE_POINTS_TOURS_FK)
           throw new ConflictError('Referenced tour does not exist');
-        if (err.constraint === CONSTRAINTS.ROUTE_POINTS_LANMARKS_FK) {
-          throw new ConflictError('Referenced landmark type does not exist');
+        if (err.original.constraint === CONSTRAINTS.ROUTE_POINTS_LANMARKS_FK) {
+          throw new ConflictError('Referenced landmark does not exist');
         }
       }
       throw err;

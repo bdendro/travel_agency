@@ -3,6 +3,7 @@ import {
   createRoutePoint,
   createTour,
   createTourForEmployee,
+  createTourService,
   deleteTour,
   getEmployeeTours,
   getTours,
@@ -14,6 +15,7 @@ import idValidator from '../middleware/validateParamsId.js';
 import USER_ROLES from '../constants/enums/userRoles.js';
 import { createTourSchema, tourScheduledSchema } from '../middleware/schemas/tour.schema.js';
 import { createRoutePointWithLandmarkSchema } from '../middleware/schemas/routePoint.schema.js';
+import { createTourServiceContractorSchema } from '../middleware/schemas/tourService.schema.js';
 
 const tourRouter = Router();
 
@@ -42,6 +44,14 @@ tourRouter.post(
   auth([USER_ROLES.EMPLOYEE, USER_ROLES.ADMIN]),
   validateSchema(createRoutePointWithLandmarkSchema),
   createRoutePoint
+);
+
+tourRouter.post(
+  '/:tourId/tour-services',
+  idValidator(['tourId']),
+  auth([USER_ROLES.EMPLOYEE, USER_ROLES.ADMIN]),
+  validateSchema(createTourServiceContractorSchema),
+  createTourService
 );
 
 tourRouter.patch(

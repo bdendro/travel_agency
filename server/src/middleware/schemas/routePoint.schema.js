@@ -4,7 +4,7 @@ import { createLandmarkSchema } from './landmark.schema.js';
 export const getRoutePoint = (req) => {
   return {
     sequenceOrder: req.sequenceOrder,
-    duration: req.duration,
+    durationInSeconds: req.durationInSeconds,
   };
 };
 

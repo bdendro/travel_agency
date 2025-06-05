@@ -9,6 +9,7 @@ import TOUR_STATUSES_FOR_ROLE from '../constants/tourView.js';
 import TOUR_STATUSES from '../constants/enums/tourStatuses.js';
 import { getFutureDate } from '../utils/dates.js';
 import employeeService from './employee.service.js';
+import tourServiceService from './tourService.service.js';
 
 class TourService {
   constructor() {
@@ -17,6 +18,7 @@ class TourService {
     this.User = User;
     this.EmployeePositionType = EmployeePositionType;
     this.employeeService = employeeService;
+    this.tourServiceService = tourServiceService;
   }
 
   async getToursForRole(role) {
@@ -85,8 +87,10 @@ class TourService {
         `Tour with only '${TOUR_STATUSES.DRAFT}' status can be updated to '${TOUR_STATUSES.SCHEDULED}'`
       );
 
+    const pricePerPerson = await this.tourServiceService.getTourPrice(tourId);
+
     const [affectedRows, updatedTours] = await this.Tour.update(
-      { ...updates, status: TOUR_STATUSES.SCHEDULED },
+      { ...updates, status: TOUR_STATUSES.SCHEDULED, pricePerPerson },
       { where: { id: tourId, employeeId: employee.id }, returning: true }
     );
     if (!affectedRows) throw new NotFoundError('Tour not found');
@@ -119,7 +123,6 @@ class TourService {
       if (!deletedRowsCount) throw new NotFoundError('Tour not found');
     } catch (err) {
       if (err instanceof DB_ERRORS.FOREIGN_KEY_CONSTRAINT)
-        // on cascade needed for routePoints
         throw new ConflictError(
           `Tour cannot be deleted because it is referenced by other records.`
         );
@@ -133,7 +136,6 @@ class TourService {
       if (!deletedRowsCount) throw new NotFoundError('Tour not found');
     } catch (err) {
       if (err instanceof DB_ERRORS.FOREIGN_KEY_CONSTRAINT)
-        // on cascade needed for routePoints
         throw new ConflictError(
           `Tour cannot be deleted because it is referenced by other records.`
         );
