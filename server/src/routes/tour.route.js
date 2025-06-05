@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   createRoutePoint,
   createTour,
+  createTourBooking,
   createTourForEmployee,
   createTourService,
   deleteTour,
@@ -16,6 +17,7 @@ import USER_ROLES from '../constants/enums/userRoles.js';
 import { createTourSchema, tourScheduledSchema } from '../middleware/schemas/tour.schema.js';
 import { createRoutePointWithLandmarkSchema } from '../middleware/schemas/routePoint.schema.js';
 import { createTourServiceContractorSchema } from '../middleware/schemas/tourService.schema.js';
+import { createTourBookingSchema } from '../middleware/schemas/tourBooking.schema.js';
 
 const tourRouter = Router();
 
@@ -52,6 +54,14 @@ tourRouter.post(
   auth([USER_ROLES.EMPLOYEE, USER_ROLES.ADMIN]),
   validateSchema(createTourServiceContractorSchema),
   createTourService
+);
+
+tourRouter.post(
+  '/:tourId/tour-bookings',
+  idValidator(['tourId']),
+  auth([USER_ROLES.TOUR_OPERATOR]),
+  validateSchema(createTourBookingSchema),
+  createTourBooking
 );
 
 tourRouter.patch(

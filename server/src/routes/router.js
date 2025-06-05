@@ -10,6 +10,7 @@ import routePointRouter from './routePoint.route.js';
 import landmarkRouter from './landmark.route.js';
 import tourServiceRouter from './tourService.route.js';
 import contractorRouter from './contractor.route.js';
+import tourBookingRouter from './tourBooking.route.js';
 
 const router = Router();
 
@@ -30,5 +31,7 @@ router.use('/landmarks', landmarkRouter);
 router.use('/tour-services', tourServiceRouter);
 
 router.use('/contractors', contractorRouter);
+
+router.use('/tour-bookings', tourBookingRouter);
 
 export default router;

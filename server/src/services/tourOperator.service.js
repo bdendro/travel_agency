@@ -7,8 +7,14 @@ import { DB_ERRORS } from '../constants/dbErrors.js';
 
 class TourOperatorService {
   constructor() {
-    this.TourOperatorModel = TourOperator;
+    this.TourOperator = TourOperator;
     this.userService = userService;
+  }
+
+  async getByUserId(userId) {
+    const tourOperator = await this.TourOperator.findOne({ where: { userId: userId } });
+    if (!tourOperator) throw new NotFoundError('Tour operator not found');
+    return tourOperator;
   }
 
   async getByUser(user) {
@@ -24,7 +30,7 @@ class TourOperatorService {
     const t = await sequelize.transaction();
 
     try {
-      const tourOperator = await this.TourOperatorModel.findByPk(tourOperatorId, {
+      const tourOperator = await this.TourOperator.findByPk(tourOperatorId, {
         transaction: t,
         lock: t?.LOCK.UPDATE,
       });
@@ -43,18 +49,18 @@ class TourOperatorService {
   }
 
   async unregisterTourOperator(tourOperatorId) {
-    const tourOperator = await this.TourOperatorModel.findByPk(tourOperatorId);
+    const tourOperator = await this.TourOperator.findByPk(tourOperatorId);
 
     if (!tourOperator) throw new NotFoundError('Tour operator not found');
     if (!tourOperator.userId) throw new ConflictError("Tour operator already don't have access");
 
     await this.userService.delete(tourOperator.userId); // ON DELETE: SET NULL to employee userId
-    return await this.TourOperatorModel.findByPk(tourOperatorId);
+    return await this.TourOperator.findByPk(tourOperatorId);
   }
 
   async setTourOperatorUserId(id, userId, transaction) {
     try {
-      const [affectedRowsCount, updated] = await this.TourOperatorModel.update(
+      const [affectedRowsCount, updated] = await this.TourOperator.update(
         { userId },
         { where: { id }, transaction, returning: true }
       );

@@ -1,4 +1,5 @@
 import { Op } from 'sequelize';
+import Decimal from 'decimal.js';
 import TOUR_STATUSES from '../constants/enums/tourStatuses.js';
 import Tour from '../models/Tour.js';
 import TourService from '../models/TourService.js';
@@ -97,8 +98,8 @@ class TourServiceService {
     if (!statuses.includes(tour.status))
       throw new ConflictError(`Tour price can be calculated only for: '${statuses.join("', '")}'`);
 
-    const pricePerPerson = tour.pricePerPerson || 0;
-    return pricePerPerson * PRICE_MULTIPLIERS.BASE_TOUR;
+    const pricePerPerson = new Decimal(tour.pricePerPerson || 0);
+    return pricePerPerson.times(PRICE_MULTIPLIERS.BASE_TOUR).toNumber();
   }
 
   async deleteTourService(user, tourServiceId) {

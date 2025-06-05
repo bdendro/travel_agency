@@ -3,11 +3,14 @@ import BaseTourDTO from '../dto/tours/BaseTour.dto.js';
 import TourDTO from '../dto/tours/Tour.dto.js';
 import TourWithEmployeeDTO from '../dto/tours/TourEmployee.dto.js';
 import { TourServiceWithContractorDTO } from '../dto/tourService/TourServiceContractor.dto.js';
+import TourBookingDTO from '../dto/tourBooking/TourBooking.dto.js';
 import { getRoutePoint } from '../middleware/schemas/routePoint.schema.js';
 import { getTourService } from '../middleware/schemas/tourService.schema.js';
 import employeeService from '../services/employee.service.js';
 import routePointService from '../services/routePoint.service.js';
 import tourService from '../services/tour.service.js';
+import tourBookingService from '../services/tourBooking.service.js';
+import tourOperatorService from '../services/tourOperator.service.js';
 import tourServiceService from '../services/tourService.service.js';
 
 export const getTours = async (req, res, next) => {
@@ -81,6 +84,22 @@ export const createTourService = async (req, res, next) => {
       tourServiceReq
     );
     return res.status(201).json(new TourServiceWithContractorDTO(tourService, contractor));
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const createTourBooking = async (req, res, next) => {
+  const tourId = req.paramsValidated.tourId;
+  const tourBookingReq = req.bodyValidated;
+  try {
+    const tourOperator = await tourOperatorService.getByUserId(req.user?.userId);
+    const tourBooking = await tourBookingService.createTourBooking(
+      tourId,
+      tourOperator.id,
+      tourBookingReq
+    );
+    return res.status(201).json(new TourBookingDTO(tourBooking));
   } catch (err) {
     next(err);
   }
