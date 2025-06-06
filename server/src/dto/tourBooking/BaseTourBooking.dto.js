@@ -1,8 +1,8 @@
 export default class BaseTourBookingDTO {
-  constructor({ id, bookingDate, touristsCount, status, price }) {
+  constructor({ id, bookingDate, touristCount, status, price }) {
     this.id = id;
     this.bookingDate = bookingDate;
-    this.touristCount = touristsCount;
+    this.touristCount = touristCount;
     this.status = status;
     this.price = price;
   }
